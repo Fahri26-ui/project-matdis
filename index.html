@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permutasi - Kel 5</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <ul>
+                <li>
+                    <a href="#definisi">DEFINISI</a>
+                </li>
+                <li>
+                    <a href="#representasi">REPRESENTASI</a>
+                </li>
+                <li>
+                    <a href="#permutasi">PERMUTASI</a>
+                </li>
+                <li>
+                    <a href="#aplikasi">APLIKASI</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="header">
+            <header>Permutasi</header>
+            <p>Oleh Kelompok 5</p>
+        </div>
+
+        <section class="definisi" id="definisi">
+            <h2>Definisi</h2>
+            <p>
+                <b>Permutasi</b> adalah jumlah urutan berbeda dari pengaturan objek-objek. Urutan diperhatikan, jadi AB ≠ BA.
+            </p>
+            <p>
+                <b>Kombinasi</b> adalah bentuk khusus dari permutasi di mana urutan diabaikan. Susunan ACB dan BCA dianggap sama dan dihitung sekali.
+            </p>
+            <p>
+                <b>Faktorial</b>: n! = n × (n−1) × … × 1, dengan 0! = 1.
+            </p>
+            <p>
+                Bentuk khusus aplikasi aturan perkalian, misalkan jumlah objek adalah n, maka urutan pertama dipilih dari n objek, urutan kedua dipilih dari n-1 objek. Urutan ketiga dipilih dari n-2 objek, begitu seterusnya dan urutan terakhir dipilih dari 1 objek yang tersisa.
+            </p>
+        </section>
+        <section class="representasi" id="representasi">
+            <h2>Representasi</h2>
+            <p>
+                Contoh: tiga bola berbeda warna (merah, biru, putih) dimasukkan ke 3 kotak, masing-masing 1 bola. Ada berapa susunan?
+            </p>
+            <p><span class="ball m"></span>merah (m) <span class="ball b"></span>biru (b) <span class="ball p"></span>putih (p)</p>
+            <p class="mu">Kotak pertama bisa diisi 3 bola, kotak kedua 2 bola, kotak ketiga 1 bola, sehingga 3 × 2 × 1 = 3! = 6 susunan.</p>
+            <div class="chips" id="list3"></div>
+            <h3 style="font-size:1rem;margin-bottom:4px">Coba huruf sendiri (maks. 6 huruf)</h3>
+            <input id="huruf" value="ABC" maxlength="6" aria-label="Huruf">
+            <div class="mu" id="hurufInfo"></div>
+            <div class="chips" id="hurufList"></div>
+            <p class="mu">Representasi lain: diagram pohon (cabang bertingkat), tabel susunan, dan notasi rumus nPr,
+                nCr.</p>
+        </section>
+    </div>
+
+    <script>
+        function perms(a) { if (a.length <= 1) return [a]; var o = []; a.forEach(function (x, i) { perms(a.slice(0, i).concat(a.slice(i + 1))).forEach(function (p) { o.push([x].concat(p)) }) }); return o }
+        function chips(el, list) { el.innerHTML = ""; list.forEach(function (s) { var d = document.createElement("span"); d.className = "chip"; d.textContent = s; el.appendChild(d) }) }
+        chips(document.getElementById("list3"), perms(["m", "b", "p"]).map(function (p) { return p.join(" ") }));
+        var hi = document.getElementById("huruf");
+        function upd() {
+            var s = hi.value.replace(/\s/g, "").slice(0, 6).split("");
+            var u = Array.from(new Set(s.map(function (x) { return x.toUpperCase() })));
+            var all = perms(s.map(function (x) { return x.toUpperCase() })).map(function (p) { return p.join("") });
+            var uniq = Array.from(new Set(all));
+            document.getElementById("hurufInfo").textContent = s.length ? ("Susunan berbeda: " + uniq.length + (u.length < s.length ? " (ada huruf yang sama)" : "")) : "";
+            chips(document.getElementById("hurufList"), uniq.slice(0, 120));
+        }
+        hi.addEventListener("input", upd); upd();
+
+        function fact(n) { var r = 1n; for (var i = 2n; i <= BigInt(n); i++)r *= i; return r }
+        var jn = document.getElementById("jenis");
+        jn.addEventListener("change", function () {
+            var v = jn.value;
+            document.getElementById("rw").style.display = (v === "P" || v === "C") ? "" : "none";
+            document.getElementById("uw").style.display = v === "U" ? "" : "none";
+        });
+        document.getElementById("hit").addEventListener("click", function () {
+            var v = jn.value, n = parseInt(document.getElementById("n").value), r = parseInt(document.getElementById("r").value), o = document.getElementById("out"), t;
+            if (isNaN(n) || n < 0 || n > 100) { o.textContent = "Masukkan n antara 0 dan 100."; return }
+            if ((v === "P" || v === "C") && (isNaN(r) || r < 0 || r > n)) { o.textContent = "r harus antara 0 dan n."; return }
+            if (v === "P") t = "P(" + n + "," + r + ") = " + (fact(n) / fact(n - r)).toLocaleString("id-ID");
+            else if (v === "C") t = "C(" + n + "," + r + ") = " + (fact(n) / (fact(r) * fact(n - r))).toLocaleString("id-ID");
+            else if (v === "F") t = n + "! = " + fact(n).toLocaleString("id-ID");
+            else if (v === "S") { if (n < 1) { o.textContent = "n minimal 1."; return } t = "(" + n + "−1)! = " + fact(n - 1).toLocaleString("id-ID") }
+            else {
+                var ps = document.getElementById("u").value.split(",").map(function (x) { return parseInt(x) }).filter(function (x) { return x > 0 });
+                var sum = ps.reduce(function (a, b) { return a + b }, 0);
+                if (sum > n) { o.textContent = "Jumlah unsur sama melebihi n."; return }
+                var d = 1n; ps.forEach(function (x) { d *= fact(x) });
+                t = n + "!/(" + ps.map(function (x) { return x + "!" }).join("·") + ") = " + (fact(n) / d).toLocaleString("id-ID")
+            }
+            o.textContent = t;
+        });
+        document.getElementById("hit").click();
+    </script>
+</body>
+</html>
