@@ -7,11 +7,16 @@ body {
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth; 
+}
+
 body {
-    height: 2000px;
+    height: 9000px;
     font-family: "Rubik", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
+    background: #F4F1EA;
 }
 
 .container {
@@ -20,12 +25,12 @@ body {
 }
 
 section {
-    background-color: #FFF8EC;
     width: 750px;
-    margin: 16px auto;
+    margin: 30px auto;
     padding: 18px;
     border-radius: 14px;
     box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.2);
+    background: #E3DDCF;
 }
 
 
@@ -34,6 +39,9 @@ nav {
     position: fixed;
     width: 100%;
     display: flex;
+    /* position: sticky;
+    top: 0; */
+    z-index: 10;
 }
 
 nav ul {
@@ -52,7 +60,7 @@ nav ul li {
 nav ul li a {
     text-decoration: none;
     display: inline-block;
-    background-color: #FFF8EC;
+    background-color: #E3DDCF;
     color: #000;
     font-weight: bold;
     padding: 6px 23px;
@@ -86,12 +94,23 @@ nav ul li a:hover {
 }
 
 
+
 /* Definisi */
+.definisi {
+    scroll-margin-top: 90px;
+}
+
 .definisi p, .representasi p {
     margin-top: 15px;
 }
 
+
+
 /* Representasi */
+.representasi {
+    scroll-margin-top: 90px;
+}
+
 .representasi span {
     margin-left: 10px;
 }
@@ -120,6 +139,38 @@ nav ul li a:hover {
 
 .representasi h3 {
     margin-top: 10px;
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0
+}
+
+.chip {
+    border: 1px solid #000;
+    border-radius: 10px;
+    padding: 6px 12px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    background: #F4F1EA;
+}
+
+input,
+select,
+button {
+    font: inherit;
+    padding: 9px 12px;
+    border-radius: 10px;
+    border: 1px solid #000;
+    background: #F4F1EA;
+    color: var(--tx);
+    width: 100%
+}
+
+input {
+    margin-bottom: 8px;
 }
 
 /* #out {
