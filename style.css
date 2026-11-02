@@ -8,11 +8,10 @@ body {
 }
 
 html {
-    scroll-behavior: smooth; 
+    scroll-behavior: smooth;
 }
 
 body {
-    height: 9000px;
     font-family: "Rubik", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
@@ -25,13 +24,15 @@ body {
 }
 
 section {
-    width: 750px;
+    width: calc(100% - 32px);
+    max-width: 750px;
     margin: 30px auto;
     padding: 18px;
     border-radius: 14px;
     box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.2);
     background: #E3DDCF;
 }
+
 
 
 /* Navigasi */
@@ -48,13 +49,15 @@ nav ul {
     display: flex;
     list-style: none;
     margin: 20px auto;
-    
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
 }
 
 nav ul li {
     display: flex;
     border-radius: 25px;
-    margin-right: 5px;
+    margin-right: 0;
 }
 
 nav ul li a {
@@ -74,13 +77,20 @@ nav ul li a:hover {
     color: #fff;
 }
 
+/* nav ul li a:hover,
+nav ul li a.active {
+    background-color: #171313;
+    color: #fff;
+} */
+
+
 
 /* Header */
 .header {
     width: 100%;
 }
 
-.header header {
+.header h1 {
     font-size: 30px;
     font-weight: bold;
     text-align: center;
@@ -100,7 +110,8 @@ nav ul li a:hover {
     scroll-margin-top: 90px;
 }
 
-.definisi p, .representasi p {
+.definisi p,
+.representasi p {
     margin-top: 15px;
 }
 
@@ -111,8 +122,13 @@ nav ul li a:hover {
     scroll-margin-top: 90px;
 }
 
-.representasi span {
+.representasi p span {
     margin-left: 10px;
+}
+
+.representasi h3 {
+    font-size: 1rem;
+    margin-bottom: 4px
 }
 
 .ball {
@@ -165,7 +181,7 @@ button {
     border-radius: 10px;
     border: 1px solid #000;
     background: #F4F1EA;
-    color: var(--tx);
+    color: #000;
     width: 100%
 }
 
@@ -173,17 +189,58 @@ input {
     margin-bottom: 8px;
 }
 
-/* #out {
-    margin-top: 12px;
-    font-size: 1.15rem;
-    font-weight: 600;
-    word-break: break-all
+
+
+/* Permutasi */
+.permutasi {
+    scroll-margin-top: 90px;
 }
 
-table {
+.permutasi table {
     width: 100%;
     border-collapse: collapse;
     font-size: .93rem;
     display: block;
     overflow-x: auto
-} */
+}
+
+.permutasi table {
+    margin-top: 15px;
+}
+
+.permutasi th {
+    background: #5B574D;
+    color: #F4F1EA;
+}
+
+.permutasi th,
+.permutasi td {
+    padding: 5px;
+    border: 1px solid #5B574D;
+}
+
+.permutasi p {
+    margin-top: 14px;
+    margin-bottom: 8px;
+}
+
+
+
+/* Aplikasi */
+.aplikasi {
+    scroll-margin-top: 90px;
+}
+
+.aplikasi ul {
+    margin-top: 15px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+
+
+/* footer */
+footer {
+    text-align: center;
+    margin: 60px;
+}
