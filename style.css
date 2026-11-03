@@ -24,6 +24,7 @@ body {
 }
 
 section {
+    scroll-margin-top: 90px;
     width: calc(100% - 32px);
     max-width: 750px;
     margin: 30px auto;
@@ -43,6 +44,7 @@ nav {
     /* position: sticky;
     top: 0; */
     z-index: 10;
+    pointer-events: none;
 }
 
 nav ul {
@@ -70,6 +72,7 @@ nav ul li a {
     border-radius: 15px;
     text-align: center;
     box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.2);
+    pointer-events: auto;
 }
 
 nav ul li a:hover {
@@ -106,10 +109,6 @@ nav ul li a.active {
 
 
 /* Definisi */
-.definisi {
-    scroll-margin-top: 90px;
-}
-
 .definisi p,
 .representasi p {
     margin-top: 15px;
@@ -118,10 +117,6 @@ nav ul li a.active {
 
 
 /* Representasi */
-.representasi {
-    scroll-margin-top: 90px;
-}
-
 .representasi p span {
     margin-left: 10px;
 }
@@ -192,10 +187,6 @@ input {
 
 
 /* Permutasi */
-.permutasi {
-    scroll-margin-top: 90px;
-}
-
 .permutasi table {
     width: 100%;
     border-collapse: collapse;
@@ -268,6 +259,13 @@ footer {
 /* Responsive */
 @media screen and (max-width: 698px) {
     .header h1 {
-        padding-top: 120px;
+        padding-top: 140px;
+    }
+    section {
+        scroll-margin-top: 140px;
+    }
+    nav ul li a {
+        padding: 6px 14px;
+        font-size: 0.85rem;
     }
 }

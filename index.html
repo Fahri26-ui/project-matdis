@@ -155,7 +155,7 @@
             var all = perms(s.map(function (x) { return x.toUpperCase() })).map(function (p) { return p.join("") });
             var uniq = Array.from(new Set(all));
             document.getElementById("hurufInfo").textContent = s.length ? ("Susunan berbeda: " + uniq.length + (u.length < s.length ? " (ada huruf yang sama)" : "")) : "";
-            chips(document.getElementById("hurufList"), uniq.slice(0, 120));
+            chips(document.getElementById("hurufList"), s.length ? uniq.slice(0, 120) : []);
         }
         hi.addEventListener("input", upd); upd();
 
