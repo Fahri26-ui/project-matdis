@@ -239,8 +239,35 @@ input {
 
 
 
+/* Latihan */
+.latihan p {
+    margin-top: 15px;
+}
+
+.latihan details {
+    border: 1px solid #5B574D;
+    border-radius: 10px;
+    padding: 7px;
+    margin: 10px 5px;
+}
+
+.latihan summary {
+    margin: 5px;
+}
+
+
+
 /* footer */
 footer {
     text-align: center;
     margin: 60px;
+}
+
+
+
+/* Responsive */
+@media screen and (max-width: 698px) {
+    .header h1 {
+        padding-top: 120px;
+    }
 }
