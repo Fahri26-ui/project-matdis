@@ -26,6 +26,9 @@
                     <a href="#permutasi">PERMUTASI</a>
                 </li>
                 <li>
+                    <a href="#kalkulator">KALKULATOR</a>
+                </li>
+                <li>
                     <a href="#aplikasi">APLIKASI</a>
                 </li>
                 <li>
@@ -109,6 +112,31 @@
                 30.</p>
             <p><b>Contoh siklik:</b> 5 orang duduk melingkar: (5−1)! = 24 cara.</p>
         </section>
+        <section class="kalkulator" id="kalkulator">
+            <h2>Kalkulator</h2>
+            <label for="jenis">Jenis</label>
+            <select id="jenis">
+                <option value="P">Permutasi nPr</option>
+                <option value="C">Kombinasi nCr</option>
+                <option value="F">Faktorial n!</option>
+                <option value="S">Permutasi siklik (n−1)!</option>
+                <option value="U">Unsur sama n!/(p!q!r!)</option>
+            </select>
+            <div class="row" id="inp">
+                <div>
+                    <label for="n">n</label><input id="n" type="number" min="0" max="100" value="6">
+                </div>
+                <div id="rw"><label for="r">r</label>
+                    <input id="r" type="number" min="0" max="100" value="3">
+                </div>
+            </div>
+            <div id="uw" style="display:none">
+                <label for="u">Jumlah tiap unsur sama (pisahkan koma, mis. 2,2)</label>
+                <input id="u" value="2,2">
+            </div>
+            <button id="hit">Hitung</button>
+            <div id="out"></div>
+        </section>
         <section class="aplikasi" id="aplikasi">
             <h2>Aplikasi</h2>
             <ul>
@@ -162,30 +190,30 @@
         function fact(n) { var r = 1n; for (var i = 2n; i <= BigInt(n); i++)r *= i; return r }
 
         // Kalkulator
-        // var jn = document.getElementById("jenis");
-        // jn.addEventListener("change", function () {
-        //     var v = jn.value;
-        //     document.getElementById("rw").style.display = (v === "P" || v === "C") ? "" : "none";
-        //     document.getElementById("uw").style.display = v === "U" ? "" : "none";
-        // });
-        // document.getElementById("hit").addEventListener("click", function () {
-        //     var v = jn.value, n = parseInt(document.getElementById("n").value), r = parseInt(document.getElementById("r").value), o = document.getElementById("out"), t;
-        //     if (isNaN(n) || n < 0 || n > 100) { o.textContent = "Masukkan n antara 0 dan 100."; return }
-        //     if ((v === "P" || v === "C") && (isNaN(r) || r < 0 || r > n)) { o.textContent = "r harus antara 0 dan n."; return }
-        //     if (v === "P") t = "P(" + n + "," + r + ") = " + (fact(n) / fact(n - r)).toLocaleString("id-ID");
-        //     else if (v === "C") t = "C(" + n + "," + r + ") = " + (fact(n) / (fact(r) * fact(n - r))).toLocaleString("id-ID");
-        //     else if (v === "F") t = n + "! = " + fact(n).toLocaleString("id-ID");
-        //     else if (v === "S") { if (n < 1) { o.textContent = "n minimal 1."; return } t = "(" + n + "−1)! = " + fact(n - 1).toLocaleString("id-ID") }
-        //     else {
-        //         var ps = document.getElementById("u").value.split(",").map(function (x) { return parseInt(x) }).filter(function (x) { return x > 0 });
-        //         var sum = ps.reduce(function (a, b) { return a + b }, 0);
-        //         if (sum > n) { o.textContent = "Jumlah unsur sama melebihi n."; return }
-        //         var d = 1n; ps.forEach(function (x) { d *= fact(x) });
-        //         t = n + "!/(" + ps.map(function (x) { return x + "!" }).join("·") + ") = " + (fact(n) / d).toLocaleString("id-ID")
-        //     }
-        //     o.textContent = t;
-        // });
-        // document.getElementById("hit").click();
+        var jn = document.getElementById("jenis");
+        jn.addEventListener("change", function () {
+            var v = jn.value;
+            document.getElementById("rw").style.display = (v === "P" || v === "C") ? "" : "none";
+            document.getElementById("uw").style.display = v === "U" ? "" : "none";
+        });
+        document.getElementById("hit").addEventListener("click", function () {
+            var v = jn.value, n = parseInt(document.getElementById("n").value), r = parseInt(document.getElementById("r").value), o = document.getElementById("out"), t;
+            if (isNaN(n) || n < 0 || n > 100) { o.textContent = "Masukkan n antara 0 dan 100."; return }
+            if ((v === "P" || v === "C") && (isNaN(r) || r < 0 || r > n)) { o.textContent = "r harus antara 0 dan n."; return }
+            if (v === "P") t = "P(" + n + "," + r + ") = " + (fact(n) / fact(n - r)).toLocaleString("id-ID");
+            else if (v === "C") t = "C(" + n + "," + r + ") = " + (fact(n) / (fact(r) * fact(n - r))).toLocaleString("id-ID");
+            else if (v === "F") t = n + "! = " + fact(n).toLocaleString("id-ID");
+            else if (v === "S") { if (n < 1) { o.textContent = "n minimal 1."; return } t = "(" + n + "−1)! = " + fact(n - 1).toLocaleString("id-ID") }
+            else {
+                var ps = document.getElementById("u").value.split(",").map(function (x) { return parseInt(x) }).filter(function (x) { return x > 0 });
+                var sum = ps.reduce(function (a, b) { return a + b }, 0);
+                if (sum > n) { o.textContent = "Jumlah unsur sama melebihi n."; return }
+                var d = 1n; ps.forEach(function (x) { d *= fact(x) });
+                t = n + "!/(" + ps.map(function (x) { return x + "!" }).join("·") + ") = " + (fact(n) / d).toLocaleString("id-ID")
+            }
+            o.textContent = t;
+        });
+        document.getElementById("hit").click();
 
         // Active Section
         // const links = document.querySelectorAll("nav a");

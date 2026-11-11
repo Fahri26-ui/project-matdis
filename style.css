@@ -216,6 +216,35 @@ input {
 }
 
 
+/* Kalkulator */
+.kalkulator {
+    scroll-margin-top: 90px;
+}
+
+.kalkulator h2, 
+.kalkulator label,
+.kalkulator select,
+.kalkulator div,
+.kalkulator button {
+    margin-bottom: 10px;
+}
+
+.kalkulator label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.kalkulator #out {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.kalkulator button {
+    cursor: pointer;
+    background-color: #5B574D;
+    color: #fff;
+}
+
 
 /* Aplikasi */
 .aplikasi {
@@ -243,6 +272,7 @@ input {
 }
 
 .latihan summary {
+    cursor: pointer;
     margin: 5px;
 }
 
