@@ -264,14 +264,16 @@ input {
     margin-top: 15px;
 }
 
-.latihan details {
+.latihan details,
+.permutasi details {
     border: 1px solid #5B574D;
     border-radius: 10px;
     padding: 7px;
     margin: 10px 5px;
 }
 
-.latihan summary {
+.latihan summary,
+.permutasi summary {
     cursor: pointer;
     margin: 5px;
 }
@@ -298,4 +300,73 @@ footer {
         padding: 6px 14px;
         font-size: 0.85rem;
     }
+}
+
+
+
+/* Diagram pohon */
+.tree svg {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    margin: 6px auto;
+}
+
+
+
+/* Permutasi: sub-judul */
+.permutasi h3,
+.pascal h3 {
+    font-size: 1rem;
+    margin-top: 20px;
+}
+
+
+
+/* Segitiga Pascal */
+.pascal p {
+    margin-top: 14px;
+}
+
+.pascal label {
+    display: block;
+    margin: 14px 0 5px;
+}
+
+.pascal-box {
+    overflow-x: auto;
+    margin: 14px 0 10px;
+    padding-bottom: 6px;
+}
+
+.pascal-row {
+    display: flex;
+    gap: 6px;
+    width: max-content;
+    margin: 6px auto;
+}
+
+.pascal .cell {
+    width: auto;
+    min-width: 42px;
+    padding: 5px 8px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.pascal .cell:hover,
+.pascal .cell:focus-visible {
+    background-color: #171313;
+    color: #fff;
+}
+
+.pascal #pascalInfo {
+    font-weight: bold;
+}
+
+.pascal .binom {
+    overflow-x: auto;
+    font-size: 1.05rem;
+    line-height: 1.8;
 }
