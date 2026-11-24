@@ -370,3 +370,58 @@ footer {
     font-size: 1.05rem;
     line-height: 1.8;
 }
+
+
+
+/* Latihan pilihan ganda */
+.latihan .soal {
+    margin-top: 20px;
+}
+
+.latihan .opsi-btn {
+    display: block;
+    text-align: left;
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+.latihan .opsi-btn:hover:not(:disabled),
+.latihan .opsi-btn:focus-visible {
+    background-color: #fff;
+}
+
+.latihan .opsi-btn:disabled {
+    cursor: default;
+    color: #000;
+}
+
+.latihan .opsi-btn.benar {
+    background-color: #cfe3c4;
+    border-color: #2e6b2e;
+}
+
+.latihan .opsi-btn.salah {
+    background-color: #f0c9c4;
+    border-color: #9b2c2c;
+}
+
+.latihan .umpan {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border: 1px solid #5B574D;
+    border-radius: 10px;
+    line-height: 1.5;
+}
+
+.latihan #skor {
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.latihan #ulang {
+    margin-top: 12px;
+    cursor: pointer;
+    background-color: #5B574D;
+    color: #fff;
+}

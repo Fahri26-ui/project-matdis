@@ -200,23 +200,10 @@
         </section>
         <section class="latihan" id="latihan">
             <h2>Latihan</h2>
-            <p><b>1.</b> Tiga ujian dilakukan dalam periode 6 hari. Berapa pengaturan jadwal agar tidak ada dua ujian atau lebih pada hari yang sama?</p>
-            <details>
-                <summary>Lihat jawaban</summary>Hari ujian berbeda dan urutan mata ujian penting, maka P(6,3) = 6!/3! = 6×5×4 = <b>120</b>.
-            </details>
-            <p><b>2.</b> Dari 8 orang, dipilih 3 orang menjadi panitia (tanpa jabatan). Berapa cara?</p>
-            <details>
-                <summary>Lihat jawaban</summary>Kombinasi: C(8,3) = 8!/(3!·5!) = <b>56</b>.
-            </details>
-            <p><b>3.</b> Berapa susunan huruf dari kata “STATISTIKA”?</p>
-            <details>
-                <summary>Lihat jawaban</summary>10 huruf: S×2, T×3, A×2, I×2, K×1. Jadi 10!/(2!·3!·2!·2!) =
-                <b>75.600</b>.
-            </details>
-            <p><b>4.</b> Enam orang duduk mengelilingi meja bundar. Berapa cara?</p>
-            <details>
-                <summary>Lihat jawaban</summary>(6−1)! = <b>120</b>.
-            </details>
+            <p class="mu">Pilih satu jawaban untuk setiap soal. Jawaban langsung diperiksa, lengkap dengan pembahasan.</p>
+            <div id="kuis"></div>
+            <div id="skor" role="status"></div>
+            <button id="ulang" type="button" hidden>Ulangi latihan</button>
         </section>
         <footer>&copy; 2026 Kelompok 5 Matdis</footer>
     </div>
@@ -317,6 +304,72 @@
             document.getElementById("binom").innerHTML = "(a + b)<sup>" + n + "</sup> = " + terms.join(" + ");
         }
         pn.addEventListener("input", pascal); pascal();
+
+        // Latihan pilihan ganda
+        var soal = [
+            { q: "Tiga ujian dilakukan dalam periode 6 hari. Berapa pengaturan jadwal agar tidak ada dua ujian atau lebih pada hari yang sama?",
+              o: ["20", "120", "216", "720"], a: 1,
+              w: ["20 adalah C(6,3). Itu kombinasi, padahal urutan mata ujian diperhitungkan.", null, "216 = 6³ berarti dua ujian boleh jatuh pada hari yang sama, padahal tidak boleh.", "720 = 6! menyusun 6 objek sekaligus, sedangkan hanya 3 hari yang dipilih."],
+              p: "Hari ujian harus berbeda dan urutan mata ujian penting, maka P(6,3) = 6!/3! = 6×5×4 = <b>120</b>." },
+            { q: "Dari 8 orang, dipilih 3 orang menjadi panitia (tanpa jabatan). Berapa cara?",
+              o: ["336", "512", "56", "40.320"], a: 2,
+              w: ["336 = P(8,3). Urutan ikut dihitung, padahal panitia tanpa jabatan sehingga urutan tidak penting.", "512 = 8³ mengizinkan orang yang sama terpilih berulang kali.", null, "40.320 = 8! menyusun semua 8 orang."],
+              p: "Panitia tanpa jabatan berarti urutan tidak penting, jadi kombinasi: C(8,3) = 8!/(3!·5!) = <b>56</b>." },
+            { q: "Berapa susunan huruf dari kata “STATISTIKA”?",
+              o: ["151.200", "3.628.800", "453.600", "75.600"], a: 3,
+              w: ["Pembagi belum lengkap: huruf I (2×) belum ikut dibagi.", "3.628.800 = 10!, seolah-olah semua huruf berbeda.", "Pembagi 2!·2!·2! belum memasukkan huruf T yang muncul 3× (3! = 6).", null],
+              p: "10 huruf: S×2, T×3, A×2, I×2, K×1. Jadi 10!/(2!·3!·2!·2!) = <b>75.600</b>." },
+            { q: "Enam orang duduk mengelilingi meja bundar. Berapa cara?",
+              o: ["120", "720", "24", "60"], a: 0,
+              w: [null, "720 = 6! berlaku untuk duduk berjajar, bukan melingkar.", "24 = 4! mengurangi terlalu banyak. Yang dikurangi hanya 1 objek.", "60 tidak sesuai rumus. Permutasi siklik n objek adalah (n−1)!."],
+              p: "Permutasi siklik: (6−1)! = <b>120</b>." },
+            { q: "Lima orang (A, B, C, D, E) duduk dalam satu baris. Berapa cara jika A dan B harus bersebelahan?",
+              o: ["24", "120", "48", "240"], a: 2,
+              w: ["24 = 4! belum memperhitungkan A dan B yang bisa bertukar tempat di dalam blok.", "120 = 5! adalah semua susunan tanpa syarat.", null, "240 = 5! × 2!. A dan B digabung menjadi satu blok, sehingga objeknya tinggal 4, bukan 5."],
+              p: "Anggap A dan B satu blok, sehingga ada 4 objek: 4! = 24. Di dalam blok, A dan B bisa bertukar tempat: 2!. Jadi 4! × 2! = <b>48</b>." },
+            { q: "Pada soal yang sama (lima orang dalam satu baris), berapa cara jika A dan B tidak boleh bersebelahan?",
+              o: ["72", "48", "120", "36"], a: 0,
+              w: [null, "48 adalah banyak susunan ketika A dan B justru bersebelahan.", "120 = 5! adalah semua susunan tanpa syarat.", "36 hanya menghitung satu urutan A dan B, padahal keduanya bisa bertukar tempat."],
+              p: "Kurangi semua susunan dengan susunan yang bersebelahan: 5! − 48 = 120 − 48 = <b>72</b>." },
+            { q: "Berapa susunan huruf kata “DISKRIT” yang diawali huruf D?",
+              o: ["720", "360", "2.520", "5.040"], a: 1,
+              w: ["720 = 6! belum membagi huruf I yang muncul 2×.", null, "2.520 = 7!/2! adalah semua susunan huruf DISKRIT, tanpa syarat diawali D.", "5.040 = 7! menyusun semua huruf seolah-olah berbeda dan tanpa syarat."],
+              p: "D dikunci di posisi pertama. Tersisa 6 huruf (I, S, K, R, I, T) dengan I muncul 2×: 6!/2! = 720/2 = <b>360</b>." },
+            { q: "Sebuah PIN terdiri dari 4 digit angka (0–9) dan digitnya boleh berulang. Berapa banyak PIN yang mungkin?",
+              o: ["5.040", "210", "40", "10.000"], a: 3,
+              w: ["5.040 = P(10,4) berlaku jika digit tidak boleh berulang.", "210 = C(10,4) mengabaikan urutan, padahal PIN 1234 berbeda dengan 4321.", "40 = 10 × 4 menjumlahkan pilihan. Seharusnya setiap posisi dikalikan: 10 × 10 × 10 × 10.", null],
+              p: "Setiap dari 4 posisi punya 10 pilihan dan boleh sama, maka 10<sup>4</sup> = <b>10.000</b>." },
+            { q: "Diketahui P(7,3) = 210. Berapa nilai C(7,3)?",
+              o: ["70", "1.260", "35", "105"], a: 2,
+              w: ["70 = 210/3. Pembaginya harus 3! = 6, bukan 3.", "1.260 = 210 × 6. Kombinasi lebih kecil dari permutasi, jadi harus dibagi, bukan dikali.", null, "105 = 210/2. Pembaginya harus 3! = 6."],
+              p: "Kombinasi membuang urutan: C(7,3) = P(7,3)/3! = 210/6 = <b>35</b>." },
+            { q: "Baris ke-5 segitiga Pascal adalah 1, 5, 10, 10, 5, 1. Berapa nilai C(6,3) menurut aturan penjumlahan dua angka di atasnya?",
+              o: ["20", "30", "15", "10"], a: 0,
+              w: [null, "30 tidak sesuai: C(5,2) dan C(5,3) masing-masing bernilai 10.", "15 = C(6,2), yaitu posisi ke-2 pada baris ke-6, bukan posisi ke-3.", "10 hanya satu suku. C(6,3) adalah jumlah dua angka di atasnya."],
+              p: "C(6,3) = C(5,2) + C(5,3) = 10 + 10 = <b>20</b>." }
+        ];
+        function kuis() {
+            var box = document.getElementById("kuis"), skor = document.getElementById("skor"), ulang = document.getElementById("ulang"), done = 0, benar = 0;
+            box.innerHTML = ""; skor.textContent = ""; ulang.hidden = true;
+            soal.forEach(function (s, i) {
+                var card = document.createElement("div"); card.className = "soal";
+                var q = document.createElement("p"); q.innerHTML = "<b>" + (i + 1) + ".</b> "; q.appendChild(document.createTextNode(s.q)); card.appendChild(q);
+                var fb = document.createElement("div"); fb.className = "umpan"; fb.hidden = true; fb.setAttribute("role", "status");
+                var btns = s.o.map(function (t, j) {
+                    var b = document.createElement("button"); b.type = "button"; b.className = "opsi-btn"; b.textContent = String.fromCharCode(65 + j) + ". " + t;
+                    b.addEventListener("click", function () {
+                        btns.forEach(function (x, m) { x.disabled = true; if (m === s.a) x.classList.add("benar") });
+                        var ok = j === s.a; if (!ok) b.classList.add("salah"); else benar++;
+                        fb.innerHTML = (ok ? "<b>✓ Benar.</b> " : "<b>✗ Belum tepat.</b> " + s.w[j] + " ") + "<br><b>Pembahasan:</b> " + s.p;
+                        fb.hidden = false; done++;
+                        if (done === soal.length) { skor.textContent = "Skor kamu: " + benar + " dari " + soal.length; ulang.hidden = false }
+                    });
+                    card.appendChild(b); return b;
+                });
+                card.appendChild(fb); box.appendChild(card);
+            });
+        }
+        document.getElementById("ulang").addEventListener("click", kuis); kuis();
 
         // Active Section
         // const links = document.querySelectorAll("nav a");
