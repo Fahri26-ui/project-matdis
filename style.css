@@ -425,3 +425,78 @@ footer {
     background-color: #5B574D;
     color: #fff;
 }
+
+
+
+/* Segitiga Pascal: revisi */
+.pascal .cell.induk {
+    background-color: #cfe3c4;
+    border-color: #2e6b2e;
+}
+
+.pascal .cell.dipilih {
+    background-color: #171313;
+    color: #fff;
+}
+
+.pascal .contoh {
+    width: auto;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.pascal .contoh:hover {
+    background-color: #fff;
+}
+
+.brow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0 10px;
+    align-items: end;
+}
+
+.brow input,
+.brow select {
+    height: 42px;
+    margin-bottom: 8px;
+}
+
+.pascal .brow label {
+    margin-top: 6px;
+}
+
+.pascal .tb {
+    overflow-x: auto;
+    margin-top: 12px;
+}
+
+.pascal table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .93rem;
+}
+
+.pascal th {
+    background: #5B574D;
+    color: #F4F1EA;
+}
+
+.pascal th,
+.pascal td {
+    padding: 5px 8px;
+    border: 1px solid #5B574D;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.pascal tr.sorot td {
+    background-color: #cfe3c4;
+}
+
+.pascal .hasil {
+    overflow-x: auto;
+    font-weight: bold;
+    font-size: 1.05rem;
+    line-height: 1.8;
+}

@@ -158,8 +158,18 @@
             <div class="pascal-box" id="pascalBox"></div>
             <div class="mu" id="pascalInfo"></div>
             <h3>Teorema binomial</h3>
-            <p>Angka pada baris ke-n adalah koefisien dari (a + b)<sup>n</sup>:</p>
-            <p class="binom" id="binom"></p>
+            <p>Baris ke-n segitiga Pascal adalah koefisien dari (a + b)<sup>n</sup>. Teorema binomial menuliskannya sebagai (a + b)<sup>n</sup> = Σ C(n,r) · a<sup>n−r</sup> · b<sup>r</sup>, untuk r = 0 sampai n.</p>
+            <h3>Kalkulator ekspansi binomial</h3>
+            <p>Perluas (A + B)<sup>n</sup> atau (A − B)<sup>n</sup> dengan suku berupa angka dan/atau satu huruf, misalnya a, 2x, −3y, atau 5. Hasil langsung muncul saat kamu mengetik.</p>
+            <div class="chips" id="bContoh"></div>
+            <div class="brow">
+                <div><label for="bA">Suku pertama (A)</label><input id="bA" value="a" maxlength="6" autocomplete="off"></div>
+                <div><label for="bOp">Operasi</label><select id="bOp"><option value="+">A + B</option><option value="-">A − B</option></select></div>
+                <div><label for="bB">Suku kedua (B)</label><input id="bB" value="b" maxlength="6" autocomplete="off"></div>
+                <div><label for="bN">Pangkat (n, 0–15)</label><input id="bN" type="number" min="0" max="15" value="4"></div>
+                <div><label for="bK">Suku ke-</label><input id="bK" type="number" min="1" max="16" placeholder="opsional"></div>
+            </div>
+            <div id="bOut"></div>
         </section>
         <section class="kalkulator" id="kalkulator">
             <h2>Kalkulator</h2>
@@ -283,27 +293,94 @@
 
         // Segitiga Pascal
         var pn = document.getElementById("pn");
-        function pw(v, e) { return e === 0 ? "" : e === 1 ? v : v + "<sup>" + e + "</sup>" }
         function pascal() {
-            var n = Math.max(0, Math.min(10, parseInt(pn.value) || 0)), rows = [[1]];
+            var n = Math.max(0, Math.min(10, parseInt(pn.value) || 0)), rows = [[1]], cells = [];
             var box = document.getElementById("pascalBox"), info = document.getElementById("pascalInfo");
             for (var i = 1; i <= n; i++) { var p = rows[i - 1], row = [1]; for (var j = 1; j < i; j++) row.push(p[j - 1] + p[j]); row.push(1); rows.push(row) }
             box.innerHTML = "";
             rows.forEach(function (row, i) {
-                var d = document.createElement("div"); d.className = "pascal-row";
+                var d = document.createElement("div"); d.className = "pascal-row"; cells[i] = [];
                 row.forEach(function (v, j) {
                     var b = document.createElement("button"); b.type = "button"; b.className = "cell"; b.textContent = v;
                     b.setAttribute("aria-label", "C(" + i + "," + j + ") = " + v);
-                    b.addEventListener("click", function () { info.textContent = "C(" + i + "," + j + ") = " + v });
-                    d.appendChild(b);
+                    b.addEventListener("click", function () {
+                        cells.forEach(function (r) { r.forEach(function (x) { x.classList.remove("dipilih", "induk") }) });
+                        b.classList.add("dipilih");
+                        if (j > 0 && j < i) {
+                            cells[i - 1][j - 1].classList.add("induk"); cells[i - 1][j].classList.add("induk");
+                            info.textContent = "C(" + i + "," + j + ") = C(" + (i - 1) + "," + (j - 1) + ") + C(" + (i - 1) + "," + j + ") = " + rows[i - 1][j - 1] + " + " + rows[i - 1][j] + " = " + v;
+                        } else info.textContent = "C(" + i + "," + j + ") = 1 (angka di tepi segitiga selalu 1)";
+                    });
+                    cells[i][j] = b; d.appendChild(b);
                 });
                 box.appendChild(d);
             });
-            info.textContent = "Klik sebuah angka untuk melihat C(n,r).";
-            var terms = rows[n].map(function (c, r) { return (c > 1 ? c : "") + pw("a", n - r) + pw("b", r) || "1" });
-            document.getElementById("binom").innerHTML = "(a + b)<sup>" + n + "</sup> = " + terms.join(" + ");
+            info.textContent = "Klik sebuah angka untuk melihat dari mana nilainya berasal.";
         }
         pn.addEventListener("input", pascal); pascal();
+
+        // Kalkulator ekspansi binomial
+        function parseSuku(s) {
+            var m = s.replace(/−/g, "-").match(/^\s*([+-]?)\s*(\d*)\s*([a-zA-Z]?)\s*$/);
+            if (!m || (m[2] === "" && m[3] === "")) return null;
+            var c = BigInt(m[2] || "1"); if (c === 0n) return null;
+            return { c: m[1] === "-" ? -c : c, v: m[3] };
+        }
+        function absB(x) { return x < 0n ? -x : x }
+        function pw(v, e) { return !v || e === 0 ? "" : e === 1 ? v : v + "<sup>" + e + "</sup>" }
+        function sukuStr(c, v) {
+            var m = absB(c);
+            return (c < 0n ? "−" : "") + ((m === 1n && v) ? "" : m.toLocaleString("id-ID")) + v;
+        }
+        function pangkat(c, v, e) {
+            if (e === 0) return "1";
+            if (c === 1n && v) return pw(v, e);
+            var s = sukuStr(c, v);
+            if (e === 1) return c < 0n ? "(" + s + ")" : s;
+            return "(" + s + ")<sup>" + e + "</sup>";
+        }
+        function ekspansi(aT, op, bT, n, k) {
+            var A = parseSuku(aT), B = parseSuku(bT);
+            if (!A || !B) return { err: "Suku harus berupa angka dan/atau satu huruf, misalnya a, 2x, −3y, atau 5. Angka 0 tidak diperbolehkan." };
+            if (isNaN(n) || n < 0 || n > 15) return { err: "Pangkat n harus antara 0 dan 15." };
+            if (A.v && A.v === B.v) return { err: "Variabel A dan B harus berbeda (misalnya a dan b)." };
+            var sb = op === "-" ? -B.c : B.c, row = [1n], i, j, rt = "", ht = "", sum = 0n, selTxt = "";
+            var sel = (k >= 1 && k <= n + 1) ? k - 1 : -1;
+            for (i = 1; i <= n; i++) { var nx = [1n]; for (j = 1; j < i; j++) nx.push(row[j - 1] + row[j]); nx.push(1n); row = nx }
+            row.forEach(function (C, r) {
+                var e = n - r, coef = C * A.c ** BigInt(e) * sb ** BigInt(r), vp = pw(A.v, e) + pw(B.v, r);
+                var res = sukuStr(coef, vp), pa = pangkat(A.c, A.v, e), pb = pangkat(sb, B.v, r);
+                rt += "<tr" + (r === sel ? ' class="sorot"' : "") + "><td>" + (r + 1) + "</td><td>C(" + n + "," + r + ") = " + C + "</td><td>" + pa + "</td><td>" + pb + "</td><td>" + res + "</td></tr>";
+                ht += (r === 0 ? (coef < 0n ? "−" : "") : (coef < 0n ? " − " : " + ")) + sukuStr(absB(coef), vp);
+                sum += coef;
+                if (r === sel) selTxt = "<p>Suku ke-" + k + ": C(" + n + "," + r + ") · " + pa + " · " + pb + " = <b>" + res + "</b></p>";
+            });
+            var left = "(" + sukuStr(A.c, A.v) + (sb < 0n ? " − " : " + ") + sukuStr(absB(sb), B.v) + ")<sup>" + n + "</sup>";
+            var cek = "(" + sukuStr(A.c, "") + (sb < 0n ? " − " : " + ") + sukuStr(absB(sb), "") + ")<sup>" + n + "</sup> = " + sum.toLocaleString("id-ID");
+            if (!isNaN(k) && sel === -1) selTxt = "<p>Suku ke-" + k + " tidak ada. Pilih angka 1 sampai " + (n + 1) + ".</p>";
+            return { html:
+                "<p>Rumus: (A + B)<sup>n</sup> = Σ C(n,r) · A<sup>n−r</sup> · B<sup>r</sup>, r = 0 sampai n. Di sini A = " + sukuStr(A.c, A.v) + " dan B = " + sukuStr(sb, B.v) + (sb < 0n ? " (operasi − membuat B dipakai bertanda negatif)." : ".") + "</p>" +
+                "<p>Koefisien segitiga Pascal baris ke-" + n + ": <b>" + row.join(", ") + "</b></p>" +
+                '<div class="tb"><table><tr><th>Suku ke-</th><th>C(n,r)</th><th>A<sup>n−r</sup></th><th>B<sup>r</sup></th><th>Hasil suku</th></tr>' + rt + "</table></div>" +
+                selTxt + "<p><b>Hasil:</b></p><p class=\"hasil\">" + left + " = " + ht + "</p>" +
+                "<p>Banyak suku: " + (n + 1) + ". Cek: jika semua huruf diganti 1, " + cek + ", sama dengan jumlah semua koefisien hasil.</p>" };
+        }
+        function hitungBinom() {
+            var g = function (id) { return document.getElementById(id).value }, o = document.getElementById("bOut");
+            var r = ekspansi(g("bA"), g("bOp"), g("bB"), parseInt(g("bN")), parseInt(g("bK")));
+            if (r.err) o.textContent = r.err; else o.innerHTML = r.html;
+        }
+        ["bA", "bOp", "bB", "bN", "bK"].forEach(function (id) { document.getElementById(id).addEventListener("input", hitungBinom) });
+        [["a", "-", "b", 5, "(a − b)⁵"], ["2x", "+", "3", 4, "(2x + 3)⁴"], ["x", "-", "2y", 3, "(x − 2y)³"]].forEach(function (c) {
+            var b = document.createElement("button"); b.type = "button"; b.className = "contoh"; b.textContent = c[4];
+            b.addEventListener("click", function () {
+                document.getElementById("bA").value = c[0]; document.getElementById("bOp").value = c[1];
+                document.getElementById("bB").value = c[2]; document.getElementById("bN").value = c[3]; document.getElementById("bK").value = "";
+                hitungBinom();
+            });
+            document.getElementById("bContoh").appendChild(b);
+        });
+        hitungBinom();
 
         // Latihan pilihan ganda
         var soal = [
